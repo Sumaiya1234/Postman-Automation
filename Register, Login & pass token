@@ -1,0 +1,33 @@
+//When had to pass token
+pm.test("Status code is 200", function () {
+    var jsonData = JSON.parse(responseBody);
+    pm.response.to.have.status(200);
+    pm.environment.set("TOKEN", jsonData.data.token);
+    pm.environment.set("REFRESH_TOKEN", jsonData.data.refresh_token);
+});
+
+//pass id & email
+//Regisster
+var jsonData = JSON.parse(responseBody);
+postman.setEnvironmentVariable("id", jsonData.data.id);
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+postman.setEnvironmentVariable("email", jsonData.data.email);
+//RequestBody
+{
+    "email": "sumaya+{{$timestamp}}@groots.co.jp",
+    "isEmailVerified": true,
+    "isAgreedTerms": true,
+    "isAgreedPDSTerms": true
+}
+//Login after regisster
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+//RequestBody
+{
+"username": "{{email}}",
+"password": "Aa123123",
+"rememberme": true
+}
